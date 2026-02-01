@@ -81,6 +81,7 @@ impl BunnylolCommandRegistry {
         crate::commands::GoogleSlidesCommand,
         crate::commands::GoogleCalendarCommand,
         crate::commands::GoogleChatCommand,
+        crate::commands::GoogleCloudCommand,
         crate::commands::GoogleSearchCommand,
         crate::commands::BrewCommand,
         crate::commands::ChocoCommand,
@@ -196,7 +197,7 @@ mod cache_tests {
         let commands = BunnylolCommandRegistry::get_all_commands();
 
         // Verify we have all expected commands
-        assert_eq!(commands.len(), 47, "Expected 47 commands");
+        assert_eq!(commands.len(), 48, "Expected 48 commands");
 
         // Verify cache returns same pointer (not regenerated)
         let commands2 = BunnylolCommandRegistry::get_all_commands();
