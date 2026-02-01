@@ -36,6 +36,15 @@ pub struct BunnylolConfig {
     pub server: ServerConfig,
 }
 
+fn get_port_env_var() -> Option<u16> {
+    if let Ok(port_var) = std::env::var("PORT") {
+        if let Ok(port) = port_var.parse::<u16>() {
+            return Some(port);
+        }
+    }
+    None
+}
+
 impl Default for BunnylolConfig {
     fn default() -> Self {
         Self {
@@ -160,7 +169,7 @@ fn default_max_entries() -> usize {
 }
 
 fn default_port() -> u16 {
-    8000
+    get_port_env_var().unwrap_or(8000)
 }
 
 fn default_address() -> String {
@@ -266,8 +275,14 @@ impl BunnylolConfig {
         let contents = fs::read_to_string(&config_path)
             .map_err(|e| format!("Failed to read config file {:?}: {}", config_path, e))?;
 
-        toml::from_str(&contents)
-            .map_err(|e| format!("Failed to parse config file {:?}: {}", config_path, e))
+        let mut ret: BunnylolConfig = toml::from_str(&contents)
+            .map_err(|e| format!("Failed to parse config file {:?}: {}", config_path, e))?;
+
+        if let Some(port) = get_port_env_var() {
+            ret.server.port = port;
+        }
+
+        return Ok(ret);
     }
 
     /// Write configuration to a file
