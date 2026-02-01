@@ -17,11 +17,11 @@ default_search = "google"
 
 # Command history settings
 [history]
-enabled = true
+enabled = false
 max_entries = 1000
 
 # Server configuration (for bunnylol serve)
 [server]
-port = 8000
+port = 8080
 address = "0.0.0.0"
 log_level = "normal"
